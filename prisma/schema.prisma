@@ -15,7 +15,7 @@ datasource db {
 
 // command to add new models in prisma:
 //      deno run -A --unstable npm:prisma db push  
-//      deno run -A --unstable npm:prisma 
+//      deno run -A --unstable npm:prisma generate
 
 model sections {
   id    String @id @default(auto()) @map("_id") @db.ObjectId
