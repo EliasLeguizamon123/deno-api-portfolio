@@ -21,7 +21,30 @@ router
     .get("/", (context) => {
         context.response.body = "Welcome to my own Deno API";
     })
-    .get("/projects", ((context) => {}))
+    //* Routes projects
+    .get("/projects", async (context) => {
+        const projects = await prisma.projects.findMany();
+
+        context.response.body = projects;
+    })
+    .get("/projects/:id", async (context) => {
+        const { id } = context.params;
+
+        const project = await prisma.projects.findUnique({
+            where: {
+                id: id
+            }
+        })
+
+        context.response.body = project;
+    })
+    //* Routes timeline
+    .get("/timeline", async (context) => {
+        const timeline = await prisma.timeline.findMany();
+
+        context.response.body = timeline;
+         
+    })
 
 //* Setting Middlewares
 
