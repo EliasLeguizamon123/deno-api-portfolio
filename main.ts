@@ -1,6 +1,7 @@
 import { PrismaClient } from './generated/client/deno/edge.js'
 import { Application, Router } from 'https://deno.land/x/oak@v11.1.0/mod.ts'
 import { config } from "https://deno.land/std@0.171.0/dotenv/mod.ts";
+import { oakCors } from "https://deno.land/x/cors/mod.ts";
 
 const envVars = await config();
 
@@ -25,7 +26,7 @@ router
     .get("/projects", async (context) => {
         const projects = await prisma.projects.findMany();
 
-        context.response.body = { status: 201, data: projects };
+        context.response.body = { status: 200, data: projects };
     })
     .get("/projects/:id", async (context) => {
         const { id } = context.params;
@@ -89,8 +90,11 @@ router
 
 //* Setting Middlewares
 
+app.use(oakCors())
 app.use(router.routes());
 app.use(router.allowedMethods());
+
+console.info("CORS-enabled web server listening on port 8000");
 
 //* Start Server
 
